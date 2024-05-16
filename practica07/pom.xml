@@ -9,30 +9,24 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>mx.uv</groupId>
-	<artifactId>practica05</artifactId>
+	<artifactId>practica07</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>demo</name>
-	<description>Demo project for Spring Boot</description>
+	<name>practica07</name>
+	<description>Consumo SOAP</description>
 	<properties>
-		<java.version>19</java.version>
+		<java.version>17</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web-services</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
-
-		<dependency>
-			<artifactId>wsdl4j</artifactId>
-			<groupId>wsdl4j</groupId>
-		</dependency>
-
-		<dependency>
-			<groupId>javax.xml.bind</groupId>
-			<artifactId>jaxb-api</artifactId>
-			<version>2.3.0</version>
-		</dependency>
-
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -48,24 +42,33 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 
+			<!-- tag::wsdl[] -->
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>jaxb2-maven-plugin</artifactId>
-				<version>3.1.0</version> <!--- genera paquetes javax -->
+				<groupId>com.sun.xml.ws</groupId>
+				<artifactId>jaxws-maven-plugin</artifactId>
+				<version>3.0.0</version>
 				<executions>
 					<execution>
-					<id>xjc</id>
-					<goals>
-						<goal>xjc</goal>
-					</goals>
+						<goals>
+							<goal>wsimport</goal>
+						</goals>
 					</execution>
 				</executions>
 				<configuration>
-					<sources>
-					<source>${project.basedir}/src/main/resources/saludos.xsd</source>
-					</sources>
+					<packageName>xx.mx.uv.consumo.wsdl</packageName>
+					<!-- Especifica la ruta local del archivo WSDL remoto -->
+					<!-- <wsdlUrls>
+						<wsdlUrl>http://localhost:8080/ws/saludos.wsdl</wsdlUrl>
+					</wsdlUrls> -->
+					<wsdlFiles>
+					<!-- Especifica la ruta local del archivo WSDL local -->
+						<wsdlFile>${project.basedir}/src/main/resources/saludos.wsdl</wsdlFile>
+					</wsdlFiles>
+					<sourceDestDir>${project.basedir}/src/main/java</sourceDestDir>
 				</configuration>
 			</plugin>
+			<!-- end::wsdl[] -->
+
 
 		</plugins>
 	</build>
